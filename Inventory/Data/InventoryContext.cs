@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Inventory.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.Data
 {
@@ -7,5 +8,7 @@ namespace Inventory.Data
         public InventoryContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
