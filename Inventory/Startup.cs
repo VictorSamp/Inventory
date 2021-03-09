@@ -43,7 +43,7 @@ namespace Inventory
             {
                 endpoints.MapControllerRoute(
                         name: "Default",
-                        pattern: "{Controller=Manufacturers}/{Action=Index}/{Id?}"
+                        pattern: "{Controller=Home}/{Action=Index}/{Id?}"
                     );
             });
         }

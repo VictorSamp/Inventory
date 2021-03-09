@@ -1,0 +1,7 @@
+﻿a {
+    text-decoration: none;
+}
+
+tr:hover{
+    background-color: lightgray;
+}
