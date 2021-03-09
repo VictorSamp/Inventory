@@ -28,24 +28,48 @@ namespace Inventory.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(long id)
+        public IActionResult Edit(long? id)
         {
-            return View(_context.Categories.Where(
-                m => m.CategoryId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var category = _context.Categories.Find(id);
+            if (category == null)
+            {
+                NotFound();
+            }
+            return View(category);
         }
 
         [HttpGet]
-        public IActionResult Details(long id)
+        public IActionResult Details(long? id)
         {
-            return View(_context.Categories.Where(
-                c => c.CategoryId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var category = _context.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
         }
 
         [HttpGet]
-        public IActionResult Delete(long id)
+        public IActionResult Delete(long? id)
         {
-            return View(_context.Categories.Where(
-                c => c.CategoryId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var category = _context.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
         }
 
         [HttpPost]
@@ -61,19 +85,22 @@ namespace Inventory.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
         {
-            _context.Categories.Remove(_context.Categories.Where(
-                c => c.CategoryId == category.CategoryId).First());
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _context.Entry(category).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Category category)
+        public IActionResult Delete(long id)
         {
-            _context.Categories.Remove(_context.Categories.Where(
-                c => c.CategoryId == category.CategoryId).First());
+            var category = _context.Categories.Find(id);
+            _context.Categories.Remove(category);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

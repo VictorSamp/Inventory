@@ -28,24 +28,48 @@ namespace Inventory.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(long id)
+        public IActionResult Edit(long? id)
         {
-            return View(_context.Manufacturers.Where(
-                m => m.ManufacturerId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var manufacturer = _context.Manufacturers.Find(id);
+            if (manufacturer == null)
+            {
+                NotFound();
+            }
+            return View(manufacturer);
         }
 
         [HttpGet]
-        public IActionResult Details(long id)
+        public IActionResult Details(long? id)
         {
-            return View(_context.Manufacturers.Where(
-                m => m.ManufacturerId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var manufacturer = _context.Manufacturers.Find(id);
+            if (manufacturer == null)
+            {
+                return NotFound();
+            }
+            return View(manufacturer);
         }
 
         [HttpGet]
-        public IActionResult Delete(long id)
+        public IActionResult Delete(long? id)
         {
-            return View(_context.Manufacturers.Where(
-                m => m.ManufacturerId == id).First());
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var manufacturer = _context.Manufacturers.Find(id);
+            if (manufacturer == null)
+            {
+                return NotFound();
+            }
+            return View(manufacturer);
         }
 
         [HttpPost]
@@ -61,19 +85,22 @@ namespace Inventory.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Manufacturer manufacturer)
         {
-            _context.Manufacturers.Remove(_context.Manufacturers.Where(
-               c => c.ManufacturerId == manufacturer.ManufacturerId).First());
-            _context.Manufacturers.Add(manufacturer);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _context.Entry(manufacturer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(manufacturer);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Manufacturer manufacturer)
+        public IActionResult Delete(long id)
         {
-            _context.Manufacturers.Remove(_context.Manufacturers.Where(
-                c => c.ManufacturerId == manufacturer.ManufacturerId).First());
+            var manufacturer = _context.Manufacturers.Find(id);
+            _context.Manufacturers.Remove(manufacturer);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
