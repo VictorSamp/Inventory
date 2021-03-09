@@ -17,7 +17,8 @@ namespace Inventory.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(_context.Categories.OrderBy(c => c.Name));
+            return View(_context.Categories.OrderBy(
+                c => c.Name));
         }
 
         [HttpGet]
