@@ -10,5 +10,6 @@ namespace Inventory.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
     }
 }
