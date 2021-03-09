@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Inventory.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
 {
     public class CategoriesController : Controller
     {
+        private readonly InventoryContext _context;
+
+        public CategoriesController(InventoryContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Categories);
         }
     }
 }
