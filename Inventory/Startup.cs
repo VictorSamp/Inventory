@@ -22,7 +22,7 @@ namespace Inventory
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+            services.AddRouting();
             services.AddDbContext<InventoryContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Inventory"), builder =>
                     builder.MigrationsAssembly("Inventory")));
@@ -43,7 +43,7 @@ namespace Inventory
             {
                 endpoints.MapControllerRoute(
                         name: "Default",
-                        pattern: "{Controller=Categories}/{Action=Index}/{Id?}"
+                        pattern: "{Controller=Manufacturers}/{Action=Index}/{Id?}"
                     );
             });
         }
