@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="~/lib/bootstrap-5.0.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
-    <title>@ViewBag.Title</title>
+    <link href="./images/favicon.png" rel="shortcut icon" />
+    <title>Inventory | @ViewBag.Title</title>
 </head>
 <body class="container-fluid">
     <div class="container-fluid">
-        <header class="fixed-top">
+        <header>
             <nav class="navbar navbar-expand-lg bg-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-controller="Home">Inventory</a>
@@ -19,8 +20,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link" asp-controller="Categories" asp-action="Index">Categories</a>
-                            <a class="nav-link" asp-controller="Manufacturers" asp-action="Index">Manufacturers</a>
+                            <a class="nav-link active" id="menuCategories" asp-controller="Categories" asp-action="Index">Categories</a>
+                            <a class="nav-link" id="menuManafacturers" asp-controller="Manufacturers" asp-action="Index">Manufacturers</a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +30,7 @@
         <section>
             @RenderBody()
         </section>
-        <footer class="fixed-bottom bg-dark text-white">
+        <footer class="bg-dark text-white">
             <p>&copy; 2021 - Inventory</p>
         </footer>
     </div>
