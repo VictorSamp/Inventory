@@ -1,6 +1,9 @@
 ﻿using Inventory.Data;
+using Inventory.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Inventory.Controllers
@@ -14,80 +17,108 @@ namespace Inventory.Controllers
             _context = context;
         }
 
-        // GET: Products
+        // GET: Index
         public ActionResult Index()
         {
-            return View(_context.Products.OrderBy(
-                p => p.Name));
+            var products = _context.Products.Include(c => c.Category)
+                .Include(m => m.Manufacturer).OrderBy(p => p.Name);
+            return View(products);
         }
 
-        // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
+        // GET: Details
+        public ActionResult Details(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var product = _context.Products.Where(p => p.ProductId == id)
+                .Include(c => c.Category)
+                .Include(m => m.Manufacturer)
+                .First();
+            if (product == null)
+            {
+                NotFound();
+            }
+            return View(product);
         }
 
-        // GET: ProductsController/Create
+        // GET: Create
         public ActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(_context.Categories.OrderBy(c => c.Name), "CategoryId", "Name");
+            ViewBag.ManufacturerId = new SelectList(_context.Manufacturers.OrderBy(m => m.Name), "ManufacturerId", "Name");
             return View();
         }
 
-        // POST: ProductsController/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Product product)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _context.Products.Add(product);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: Edit
+        public ActionResult Edit(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            ViewBag.CategoryId = new SelectList(_context.Categories.OrderBy(c => c.Name), "CategoryId", "Name", product.CategoryId);
+            ViewBag.ManufacturerId = new SelectList(_context.Manufacturers.OrderBy(m => m.Name), "ManufacturerId", "Name", product.ManufacturerId);
+            return View(product);
         }
 
-        // POST: ProductsController/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Product product)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _context.Entry(product).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(product);
         }
 
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Delete
+        public ActionResult Delete(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var product = _context.Products.Where(p => p.ProductId == id)
+                .Include(c => c.Category)
+                .Include(m => m.Manufacturer)
+                .First();
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
         }
 
-        // POST: ProductsController/Delete/5
+        // POST: Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(long id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var product = _context.Products.Find(id);
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

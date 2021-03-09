@@ -14,14 +14,15 @@
         <header>
             <nav class="navbar navbar-expand-lg bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" asp-controller="Home">Inventory</a>
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">Inventory</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link active" id="menuCategories" asp-controller="Categories" asp-action="Index">Categories</a>
-                            <a class="nav-link" id="menuManafacturers" asp-controller="Manufacturers" asp-action="Index">Manufacturers</a>
+                            <a class="nav-link" asp-controller="Products" asp-action="Index">Products</a>
+                            <a class="nav-link active" asp-controller="Categories" asp-action="Index">Categories</a>
+                            <a class="nav-link" asp-controller="Manufacturers" asp-action="Index">Manufacturers</a>
                         </div>
                     </div>
                 </div>
