@@ -1,6 +1,7 @@
 ﻿using Inventory.Data;
 using Inventory.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Inventory.Controllers
@@ -49,7 +50,8 @@ namespace Inventory.Controllers
             {
                 return BadRequest();
             }
-            var category = _context.Categories.Find(id);
+            var category = _context.Categories.Where(m => m.CategoryId == id)
+                .Include("Products.Category").First();
             if (category == null)
             {
                 return NotFound();

@@ -23,3 +23,5 @@
     <a asp-action="Edit" asp-route-id="@Model.CategoryId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<h2>Others Products</h2>
+@await Html.PartialAsync("~/Views/Products/_ByCategory.cshtml", Model.Products.ToList())
