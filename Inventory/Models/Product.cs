@@ -8,7 +8,6 @@ namespace Inventory.Models
         [DisplayName("Id")]
         public long? ProductId { get; set; }
 
-        [StringLength(100, ErrorMessage = "The product name must be at least 10 characters long", MinimumLength = 10)]
         [Required(ErrorMessage = "Enter the product name")]
         public string Name { get; set; }
 
